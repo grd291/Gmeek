@@ -279,13 +279,13 @@ class GMEEK():
             os.remove(self.root_dir+'new.xml')
             
             if new==old:
-                print("====== rss xml no update ======")
+                print("====== RSS XML 无更新 ======")
                 feedFile=open(self.root_dir+'rss.xml',"w")
                 feedFile.write(self.oldFeedString)
                 feedFile.close()
                 return
 
-        print("====== create rss xml ======")
+        print("====== 创建 RSS XML ======")
         feed.rss_file(self.root_dir+'rss.xml')
 
     def addOnePostJson(self,issue):
@@ -332,7 +332,7 @@ class GMEEK():
 
             try:
                 postConfig=json.loads(issue.body.split("\r\n")[-1:][0].split("##")[1])
-                print("Has Custom JSON parameters")
+                print("具有自定义 JSON 参数")
                 print(postConfig)
             except:
                 postConfig={}
@@ -374,7 +374,7 @@ class GMEEK():
             return listJsonName
 
     def runAll(self):
-        print("====== start create static html ======")
+        print("====== 开始创建静态 HTML ======")
         self.cleanFile()
 
         issues=self.repo.get_issues()
@@ -389,16 +389,16 @@ class GMEEK():
 
         self.createPlistHtml()
         self.createFeedXml()
-        print("====== create static html end ======")
+        print("====== 创建静态 HTML 结尾 ======")
 
     def runOne(self,number_str):
-        print("====== start create static html ======")
+        print("====== 开始创建静态 HTML ======")
         issue=self.repo.get_issue(int(number_str))
         listJsonName=self.addOnePostJson(issue)
         self.createPostHtml(self.blogBase[listJsonName]["P"+number_str])
         self.createPlistHtml()
         self.createFeedXml()
-        print("====== create static html end ======")
+        print("====== 创建静态 HTML 结尾 ======")
 
     def createFileName(self,issue,useLabel=False):
         if useLabel==True:
@@ -450,7 +450,7 @@ listFile.close()
 
 commentNumSum=0
 wordCount=0
-print("====== create postList.json file ======")
+print("====== 创建postList.json文件 ======")
 blog.blogBase["postListJson"]=dict(sorted(blog.blogBase["postListJson"].items(),key=lambda x:x[1]["createdAt"],reverse=True))#使列表由时间排序
 for i in blog.blogBase["postListJson"]:
     del blog.blogBase["postListJson"][i]["description"]
@@ -477,14 +477,14 @@ docListFile.write(json.dumps(blog.blogBase["postListJson"]))
 docListFile.close()
 
 if os.environ.get('GITHUB_EVENT_NAME')!='schedule':
-    print("====== update readme file ======")
+    print("====== 更新自述文件 ======")
     workspace_path = os.environ.get('GITHUB_WORKSPACE')
     readme="# %s :link: %s \r\n" % (blog.blogBase["title"],blog.blogBase["homeUrl"])
     readme=readme+"### :page_facing_up: [%d](%s/tag.html) \r\n" % (len(blog.blogBase["postListJson"])-1,blog.blogBase["homeUrl"])
     readme=readme+"### :speech_balloon: %d \r\n" % commentNumSum
     readme=readme+"### :hibiscus: %d \r\n" % wordCount
     readme=readme+"### :alarm_clock: %s \r\n" % datetime.datetime.now(blog.TZ).strftime('%Y-%m-%d %H:%M:%S')
-    readme=readme+"### Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek)\r\n"
+    readme=readme+"### Powered by :heart: [G.R.D](https://grdnet.org)\r\n"
     readmeFile=open(workspace_path+"/README.md","w")
     readmeFile.write(readme)
     readmeFile.close()
